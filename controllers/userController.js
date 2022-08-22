@@ -1,4 +1,4 @@
-const { User, Thought } = require("../models");
+const { User, Though } = require("../models");
 
 const userController = {
 
@@ -36,20 +36,6 @@ const userController = {
         res.status(400).json(err);
       });
   }, 
-
-  addFriend({ params }, res) {
-    User.findOneAndUpdate(
-      { _id: params.userId },
-      { $push: { friends: params.friendsId } },
-      { new: true }
-    ).then(dbUserData => {
-      if (!dbUserData) {
-        return res.status(404).json({ message: "No user found with this id"});
-      }
-      res.json(dbUserData);
-    }) 
-    .catch(err => res.json(err));
-  },
   
   updateUser({ params, body }, res) {
     User.findOneAndUpdate(
@@ -81,21 +67,6 @@ const userController = {
       })
       .catch(err => res.json(err));
   },
-
-  deleteFriend({ params }, res) {
-    User.findOneAndUpdate(
-      { _id: params.userId },
-      { $pull: { friends: params.friendsId } },
-      { new: true }
-    ).then(dbUserData => {
-      if (!dbUserData) {
-        return res.status(404).json({ message: "No user found with this id." });
-      }
-      res.json(dbUserData); 
-    })
-    .catch(err => res.json(err));
-  }
-
 }
 
 module.exports = userController;
